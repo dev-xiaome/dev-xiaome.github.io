@@ -6,17 +6,21 @@
     <title>Welcome!</title>
     <style>
         body {
-            background-color: #EEEEEE;
+            background-color: #FEFEFE;
         }
+
         h1 {
             color: #222222;
             text-align: center;
+            font-size: 42px;
         }
+
         .center {
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .btn {
             display: flex;
             background-color: #5ab8ff;
@@ -33,23 +37,57 @@
             border: 2px solid #111111;
             transition: all 0.3s ease;
         }
+
         .btn:hover {
             background-color: #7ec7ff;
             border-color: #111111;
             transform: translateY(-3px);
             color: #111111;
         }
+
         .btn:active {
             transform: translateY(-1px);
+        }
+        .cursor {
+            display: inline-block;
+            width: 0.62em;
+            height: 0.14em;
+            background: #2f2f2f;
+            vertical-align: middle;
+            margin-bottom: -0.5em;
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
     </style>
 </head>
 <body>
     <div style="margin-top: 100px;"></div>
-    <h1>欢迎来到我的主页!</h1>
-    <div style="margin-top: 50px;"></div>
+    <h1 id="text"></h1>
+    <script>
+        const text = "欢迎来到我的主页!";
+        const el = document.getElementById('text');
+        let i = 0;
+
+        el.innerHTML = '<span class="cursor"></span>';
+
+        const timer = setInterval(() => {
+            if (i < text.length) {
+                const newHTML = text.substring(0, i+1) + '<span class="cursor"></span>';
+                el.innerHTML = newHTML;
+                i++;
+            } else {
+                clearInterval(timer);
+            }
+        }, 150);
+    </script>
+    <div style="margin-top: 100px;"></div>
     <div class="center">
-        <a class="btn" href="https://xiaome-space.github.io/ModernAssembly">ModernAssembly项目</a>
+        <a class="btn" href="https://xiaome-space.github.io/ModernAssembly">ModernAssembly</a>
     </div>
 </body>
 </html>
