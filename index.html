@@ -38,6 +38,7 @@
             color: #F0F6FC;
             padding-left: 100px;
             background-size: 20px 20px;  /* 格子大小 */
+            background-attachment: fixed;
         }
 
         h1 {
@@ -208,13 +209,67 @@
             color: #d4d4d4;
             padding: 16px;
             border-radius: 8px;
-            font-family: 'maple';
+            font-family: 'mono', 'maple';
             font-size: 14px;
             line-height: 1.5;
             overflow-x: auto;
             border: 0.5px solid #B7BDC8;
             width: 380px;
             box-shadow: 0 4px 6px #0A1022;
+            transition: transform 0.3s ease;
+        }
+
+        .mini-block {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #151E2D;
+            color: #3B82F6;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'mono', 'maple';
+            font-size: 16px;
+            line-height: 1.5;
+            overflow-x: auto;
+            border: 0.5px solid #262E3E;
+            width: 220px;
+            height: 60px;
+            transition: transform 0.3s ease;
+        }
+
+        .big-mini-block {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            background: #151E2D;
+            color: #3B82F6;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'mono', 'maple';
+            font-size: 20px;
+            line-height: 1.5;
+            overflow-x: auto;
+            border: 0.5px solid #262E3E;
+            width: 500px;
+            height: 100px;
+            transition: transform 0.3s ease;
+        }
+
+        .mini-block:hover {
+            border: 0.5px solid #203E70;
+        }
+
+        .big-mini-block:hover {
+            border: 0.5px solid #203E70;
+        }
+
+        .light-code-block {
+            width: 55vw;
+
+            background-color: #19284288;
+
+            border: 1px solid rgba(255, 255, 255, 0.2);  /* 半透明白色边框 */
+            border-radius: 8px;
         }
 
         .code-block pre {
@@ -229,17 +284,31 @@
 
         .code-block:hover {
             transform: scale(1.02);
-            transition: transform 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1050px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .code-header h3 {
+            margin: 0;
+            font-weight: normal;
+            color: #F0F6FC;
         }
 
         blockquote {
-            border-left: 4px solid #6CB6FF;  /* 左边橙色竖线 */
+            border-left: 4px solid #6CB6FF;
             padding: 10px 20px;
             margin: 10px 0;
-            background: #2a95ff50;  /* 浅橙色背景 */
+            background: #2a95ff50;
             color: #F0F6FC;
             font-style: italic;
+            width: 85vw;
         }
 
         @keyframes fadeIn {
@@ -306,12 +375,16 @@
     <div style="width: 1000px; height: 250px" id="placeholder; --main-padding: 0px;">
         <h1 id="text"></h1>
     </div>
-    <h1 class="animated-gradient">让项目管理更简单</h1>
+    <span class="fade">
+        <h1 class="animated-gradient">让项目管理更简单</h1>
+    </span>
     <div style="margin-top: 100px;"></div>
 
-    <p>&nbsp;&nbsp;简单地安装:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-简单地创建和运行:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-简单地编译:</p>
+    <div class="code-header">
+        <div class="fade"><h3>简单地安装:</h3></div>
+        <div class="fade"><h3>简单地创建和运行:</h3></div>
+        <div class="fade"><h3>简单地编译:</h3></div>
+    </div>
     <div class="code-container">
     <span class="fade">
     <pre class="code-block">
@@ -360,14 +433,116 @@ Hello,World!
 ╰─────────────────────────────╯
 </code>
     </pre>
+        </span>
+        </div>
+        <div class="fade"><blockquote>
+            一切都如此简单!
+        </blockquote></div>
+        <br>
+        <br>
+        <br>
+        <div class="code-header">
+            <div class="fade"><h3>简洁明了的项目配置:</h3></div>
+        </div>
+        <br>
+        <br>
+        <span class="fade">
+        <pre class="code-block light-code-block">
+        <code>//pizza.json
+{
+    "name": "项目名称",
+    "version": "版本",
+    "desc": "描述",
+    "author": "作者名称",
+    "email": "邮箱",
+    "main": "src/main.py:main", //文件:入口点
+    "deps": [], //依赖
+    "scripts": {}, //自定义脚本(pizza &lt;name&gt;)
+    "build": { //编译选项
+        "icon": null, //图标
+        "console": true, //是否显示终端
+        "skip": false //是否跳过依赖安装错误
+    }
+}</code>
+    </pre>
     </span>
+    <br>
+    <br>
+    <br>
+    <div class="code-header">
+        <div class="fade"><h3>"pizza publish" 一键发版:</h3></div>
     </div>
-    <blockquote>
-        一切都如此简单!
-    </blockquote>
+    <br>
+    <span class="fade">
+        <pre class="code-block light-code-block">
+        <code>$ pizza publish
+╭─ 项目结构 ────────────╮
+│ hello/                │
+│ ├─ pizza.json [298 B] │
+│ └─ src/               │
+│     └─ main.py [38 B] │
+╰───────────────────────╯
+
+╭─ Pizza ──╮
+│ 打包成功 │
+│ 上传成功 │
+╰──────────╯</code>
+    </pre>
+    </span>
+    <span class="fade"><blockquote>Q: 这就完了?这么快?</blockquote></span>
+    <span class="fade"><blockquote>A: 对!</blockquote></span>
+    <span class="fade" style="display: block; text-align: center;">
+        <h2>参数</h2>
+    </span>
+    <br>
+
+    <span class="mfade">
+        <span class="big-mini-block">&nbsp;&nbsp;&nbsp;&nbsp;-i&nbsp;<span style="color: #d4d4d4">设置编译文件的图标</span></span>&nbsp;&nbsp;
+    </span>
+    <span class="mfade">
+        <span class="big-mini-block">&nbsp;&nbsp;&nbsp;&nbsp;-g&nbsp;<span style="color: #d4d4d4">设置编译后的可执行文件是否有控制台</span></span>
+    </span>
+    <br>
+    <br>
+    <span class="mfade">
+        <span class="big-mini-block">&nbsp;&nbsp;&nbsp;&nbsp;-s&nbsp;<span style="color: #d4d4d4">设置依赖安装失败时是否跳过</span></span>&nbsp;&nbsp;
+    </span>
+    <span class="mfade">
+        <span class="big-mini-block">&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;<span style="color: #d4d4d4">run项目/文件时传递参数</span></span>
+    </span>
+
+    <br>
+    <br>
+    <br>
+
+    <span class="fade" style="display: block; text-align: center;">
+        <h2>其它命令</h2>
+    </span>
+    <br>
+
+    <span class="fade">
+        <span class="mini-block">clean&nbsp;<span style="color: #d4d4d4">一键清理</span></span>
+    </span>
+    <span class="fade">
+        <span class="mini-block">freeze&nbsp;<span style="color: #d4d4d4">保存依赖到文件</span></span>
+    </span>
+    <span class="fade">
+        <span class="mini-block">add&nbsp;<span style="color: #d4d4d4">添加依赖</span></span>
+    </span>
+    <span class="fade">
+        <span class="mini-block">remove&nbsp;<span style="color: #d4d4d4">删除依赖</span></span>
+    </span>
+    <span class="fade">
+        <span class="mini-block">set&nbsp;<span style="color: #d4d4d4">设置并覆盖依赖</span></span>
+    </span>
+    <br>
+    <br>
+    <br>
     <div style="text-align: center; margin-top: 20px; color: #B7BDC8; font-family: 'mono'; font-size:12px;">
         © 2026 PyPizza | emoji: dev-xiaome.space@outlook.com
     </div>
+    <br>
+    <br>
     <script>
         const lines = ["Python项目管理器:", "PyPizza"];
         const el = document.getElementById('text');
