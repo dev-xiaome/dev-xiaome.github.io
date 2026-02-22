@@ -7,8 +7,31 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <style>
+        @font-face {
+            font-family: 'mono';
+            src: url('fonts/jetbrainsmono.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'maple';
+            src: url('fonts/maplemono.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            font-family: 'maple';
+        }
+
         body {
             background-color: #212830;
+            scroll-behavior: smooth;
+            color: #F0F6FC;
+            padding-left: 100px;
         }
 
         h1 {
@@ -17,7 +40,7 @@
             font-size: 72px;
             font-family: 'mono', sans-serif;
             text-align: left;
-            margin-left: 100px;
+            margin-left: 0px;
         }
 
         a {
@@ -120,75 +143,129 @@
             50% { opacity: 0; }
         }
 
-        @font-face {
-            font-family: 'mono';
-            src: url('fonts/jetbrainsmono.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        /* 鼠标悬停时加速/变色/变方向 */
+
         .spin:hover {
             display: inline-block;
-            animation: spin 0.5s linear infinite;  /* 加速！ */
-            filter: brightness(1.2);  /* 变亮 */
+            animation: spin 0.1s linear infinite;
             animation-direction: reverse;
         }
 
-        .blinking-emoji {
-            display: inline-block;
-            animation: blink 1s step-end infinite;
+        .code-container {
+            display: flex;
+            gap: 20px;  /* 两个代码块之间的间距 */
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'maple';
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            border: 0.5px solid #B7BDC8;
+            width: 380px;
+            box-shadow: 0 4px 6px #212830;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .code-block code {
+            display: flex;
+            font-family: inherit;
         }
     </style>
 </head>
-<body>
-    <div class="navbar">
+<body style="font-family: 'mono', sans-serif;">
+    <div class="navbar" >
         <div style="text-align: left;">
-            <a href="/">
-                <img src="favicon.ico" width="24" height="24"
-                    class="spin"
-                    style="transition: transform 0.5s; vertical-align: -5px;">
-                <span class="spin">PyPizza</span>
-            </a>
-        </div>
-
-        <div style="text-align: right;">
+            <img src="favicon.ico" width="24" height="24"
+                class="spin"
+                style="transition: transform 0.5s; vertical-align: -5px;">
+            <span class="spin">PyPizza</span>
+            &nbsp;
             <a href="https://github.com/dev-xiaome/pypizza"><span class="spin">Github</span></a>
         </div>
     </div>
-
     <div style="margin-top: 150px;"></div>
-    <h1 id="text"></h1>
+    <div style="width: 1000px; height: 250px" id="placeholder; --main-padding: 0px;">
+        <h1 id="text"></h1>
+    </div>
+    <div style="margin-top: 100px;"></div>
+
+    <p>&nbsp;&nbsp;简单地安装:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+简单地创建和运行:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+简单地编译:</p>
+    <div class="code-container">
+    <pre class="code-block">
+<code>$ pip install pypizza
+Collecting pypizza
+  Using cached pypizza-1.3.12-py3-none-any.wh
+Collecting pyinstaller&gt;=6.0 (from pypizza)
+  Using cached pyinstaller-6.19.0-py3-none-wi
+Collecting twine (from pypizza)
+  Using cached twine-6.2.0-py3-none-any.whl.m
+Collecting build (from pypizza)
+  Downloading build-1.4.0-py3-none-any.whl.me
+...
+
+</code>
+    </pre>
+    <pre class="code-block">
+<code>$ pizza new hello
+╭─ Pizza ─────────────╮
+│ 项目 hello 创建成功 │
+╰─────────────────────╯
+$ pizza run
+Hello,World!
+</code>
+    </pre>
+    <pre class="code-block">
+<code>$ pizza build
+╭─ 项目结构 ────────────╮
+│ hello/                │
+│ ├─ pizza.json [298 B] │
+│ └─ src/               │
+│     └─ main.py [38 B] │
+╰───────────────────────╯
+
+╭─ Pizza ─────────────────────╮
+│ 编译成功 -&gt; output/main.exe │
+╰─────────────────────────────╯
+</code>
+    </pre>
+    </div>
+    <div style="text-align: center; margin-top: 20px; color: #B7BDC8; font-family: 'mono'; font-size:12px;">
+        © 2026 PyPizza | emoji: dev-xiaome.space@outlook.com
+    </div>
     <script>
         const lines = ["Python项目管理器:", "PyPizza"];
         const el = document.getElementById('text');
         let lineIndex = 0;
         let charIndex = 0;
-
         const CHAR_DELAY = 150;
         const LINE_DELAY = 300;
-
         function type() {
             if (lineIndex >= lines.length) {
                 el.innerHTML = lines.join('<br>') + '<span class="cursor"></span>';
                 return;
             }
-
             const line = lines[lineIndex];
-
             let text = '';
             for (let i = 0; i < lineIndex; i++) {
                 text += lines[i] + '<br>';
             }
-
             text += line.substring(0, charIndex);
-
             el.innerHTML = text + '<span class="cursor"></span>';
-
             if (charIndex < line.length) {
                 charIndex++;
                 setTimeout(type, CHAR_DELAY);
@@ -204,10 +281,8 @@
                 }
             }
         }
-
         el.innerHTML = '<span class="cursor"></span>';
         type();
     </script>
-    <div style="margin-top: 100px;"></div>
 </body>
 </html>
