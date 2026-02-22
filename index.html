@@ -14,7 +14,7 @@
         h1 {
             color: #F0F6FC;
             text-align: center;
-            font-size: 80px;
+            font-size: 72px;
             font-family: 'mono', sans-serif;
             text-align: left;
             margin-left: 100px;
@@ -41,7 +41,8 @@
         }
 
         .logo {
-            padding: 5px 5px;
+            padding: 5px 7px;
+            transform: rotate(45deg);
         }
 
         a:hover {
@@ -103,7 +104,7 @@
             left: 0;
             right: 0;
             background-color: #151B23;
-            height: 80px;
+            height: 64px;
             padding: 0 24px;
             display: flex;
             align-items: center;
@@ -126,6 +127,17 @@
             font-style: normal;
             font-display: swap;
         }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* 鼠标悬停时加速/变色/变方向 */
+        .spin:hover {
+            display: inline-block;
+            animation: spin 0.5s linear infinite;  /* 加速！ */
+            filter: brightness(1.2);  /* 变亮 */
+            animation-direction: reverse;
+        }
 
         .blinking-emoji {
             display: inline-block;
@@ -135,60 +147,59 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/" class="logo">
-            <img src="favicon.ico" width="32" height="32" style="background-color: #B7BDC8; padding: 3px; border-radius: 50%; vertical-align: -5px;">
-            <div style="vertical-align: 0px; color: #F0F6FC; font-family: 'mono', sans-serif;">PyPizza</div>
-        </a>
-            <div style="text-align: right;">
-                <a href="/pypizza">PyPizza</a>
-                <a href="/exc">EXC</a>
+        <div style="text-align: left;">
+            <a href="/">
+                <img src="favicon.ico" width="24" height="24"
+                    class="spin"
+                    style="transition: transform 0.5s; vertical-align: -5px;">
+                <span class="spin">PyPizza</span>
+            </a>
+        </div>
+
+        <div style="text-align: right;">
+            <a href="https://github.com/dev-xiaome/pypizza"><span class="spin">Github</span></a>
         </div>
     </div>
+
     <div style="margin-top: 150px;"></div>
     <h1 id="text"></h1>
     <script>
-        const lines = ["Python项目管理器", "PyPizza"];
+        const lines = ["Python项目管理器:", "PyPizza"];
         const el = document.getElementById('text');
         let lineIndex = 0;
         let charIndex = 0;
 
-        const CHAR_DELAY = 150;  // 打字间隔
-        const LINE_DELAY = 300;    // 换行间隔（你想要的）
+        const CHAR_DELAY = 150;
+        const LINE_DELAY = 300;
 
         function type() {
             if (lineIndex >= lines.length) {
-                // 全部打完，但光标留着继续闪
-                el.innerHTML = lines.join('<br>') + '<span class="blinking-emoji">🍕</span>';
+                el.innerHTML = lines.join('<br>') + '<span class="cursor"></span>';
                 return;
             }
 
             const line = lines[lineIndex];
 
-            // 构建已打完的行
             let text = '';
             for (let i = 0; i < lineIndex; i++) {
                 text += lines[i] + '<br>';
             }
 
-            // 添加当前行正在打的部分 + 光标
             text += line.substring(0, charIndex);
 
-            el.innerHTML = text + '<span class="emoji">🍕</span>';
+            el.innerHTML = text + '<span class="cursor"></span>';
 
             if (charIndex < line.length) {
-                // 还在当前行
                 charIndex++;
                 setTimeout(type, CHAR_DELAY);
             } else {
-                // 当前行打完，换下一行
                 lineIndex++;
                 charIndex = 0;
                 if (lineIndex < lines.length) {
                     setTimeout(type, LINE_DELAY);
                 } else {
-                    // 最后一行打完，再打一次让光标显示
                     setTimeout(() => {
-                        el.innerHTML = lines.join('<br>') + '<span class="emoji">🍕</span>';
+                        el.innerHTML = lines.join('<br>') + '<span class="cursor"></span>';
                     }, CHAR_DELAY);
                 }
             }
@@ -198,8 +209,5 @@
         type();
     </script>
     <div style="margin-top: 100px;"></div>
-    <div class="center">
-        <a class="btn" href="https://dev-xiaome.github.io/ModernAssembly">ModernAssembly</a>
-    </div>
 </body>
 </html>
