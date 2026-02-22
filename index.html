@@ -4,15 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome!</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <style>
         body {
-            background-color: #FEFEFE;
+            background-color: #212830;
         }
 
         h1 {
-            color: #222222;
+            color: #F0F6FC;
             text-align: center;
-            font-size: 42px;
+            font-size: 80px;
+            font-family: 'mono', sans-serif;
+            text-align: left;
+            margin-left: 100px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            margin-right: 20px;
+            background-color: #262C36;
+            max-width: 200px;
+            justify-content: center;
+            border-radius: 5px;
+            padding: 8px 8px;
+            min-width: 8px;
+            text-align: center;
+            color: #F0F6FC;
+            font-size: 16px;
+            font-weight: 550;
+            text-decoration: none;
+            border: 0.5px solid #F0F6FC;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .logo {
+            padding: 5px 5px;
+        }
+
+        a:hover {
+            background-color: #2F3742;
+            border-color: #F0F6FC;
+            color: #F0F6FC;
+        }
+
+        a:active {
+            background-color: #3D444D;
         }
 
         .center {
@@ -23,67 +62,140 @@
 
         .btn {
             display: flex;
-            background-color: #5ab8ff;
+            background-color: #262C36;
             max-width: 200px;
             justify-content: center;
-            border-radius: 15px;
+            border-radius: 5px;
             padding: 15px 30px;
             min-width: 120px;
             text-align: center;
-            color: #222222;
+            color: #F0F6FC;
             font-size: 16px;
             font-weight: 600;
             text-decoration: none;
-            border: 2px solid #111111;
+            border: 0.5px solid #F0F6FC;
             transition: all 0.3s ease;
         }
 
         .btn:hover {
-            background-color: #7ec7ff;
-            border-color: #111111;
-            transform: translateY(-3px);
-            color: #111111;
+            background-color: #2F3742;
+            border-color: #F0F6FC;
+            color: #F0F6FC;
         }
 
         .btn:active {
-            transform: translateY(-1px);
+            background-color: #3D444D;
         }
         .cursor {
             display: inline-block;
             width: 0.62em;
             height: 0.14em;
-            background: #2f2f2f;
+            background: #F0F6FC;
             vertical-align: middle;
             margin-bottom: -0.5em;
             margin-left: 2px;
             animation: blink 1s step-end infinite;
         }
 
+        .navbar {
+            position: fixed;     /* 固定定位 */
+            top: 0;              /* 贴在顶部 */
+            left: 0;
+            right: 0;
+            background-color: #151B23;
+            height: 80px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+            justify-content: space-between;
+            border-bottom: 0.5px solid #B7BDC8;
+            white-space: nowrap;      /* 防止换行 */
+            flex-wrap: nowrap;
+        }
+
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+
+        @font-face {
+            font-family: 'mono';
+            src: url('fonts/jetbrainsmono.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .blinking-emoji {
+            display: inline-block;
+            animation: blink 1s step-end infinite;
+        }
     </style>
 </head>
 <body>
-    <div style="margin-top: 100px;"></div>
+    <div class="navbar">
+        <a href="/" class="logo">
+            <img src="favicon.ico" width="32" height="32" style="background-color: #B7BDC8; padding: 3px; border-radius: 50%; vertical-align: -5px;">
+            <div style="vertical-align: 0px; color: #F0F6FC; font-family: 'mono', sans-serif;">PyPizza</div>
+        </a>
+            <div style="text-align: right;">
+                <a href="/pypizza">PyPizza</a>
+                <a href="/exc">EXC</a>
+        </div>
+    </div>
+    <div style="margin-top: 150px;"></div>
     <h1 id="text"></h1>
     <script>
-        const text = "欢迎来到我的主页!";
+        const lines = ["Python项目管理器", "PyPizza"];
         const el = document.getElementById('text');
-        let i = 0;
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        const CHAR_DELAY = 150;  // 打字间隔
+        const LINE_DELAY = 300;    // 换行间隔（你想要的）
+
+        function type() {
+            if (lineIndex >= lines.length) {
+                // 全部打完，但光标留着继续闪
+                el.innerHTML = lines.join('<br>') + '<span class="blinking-emoji">🍕</span>';
+                return;
+            }
+
+            const line = lines[lineIndex];
+
+            // 构建已打完的行
+            let text = '';
+            for (let i = 0; i < lineIndex; i++) {
+                text += lines[i] + '<br>';
+            }
+
+            // 添加当前行正在打的部分 + 光标
+            text += line.substring(0, charIndex);
+
+            el.innerHTML = text + '<span class="emoji">🍕</span>';
+
+            if (charIndex < line.length) {
+                // 还在当前行
+                charIndex++;
+                setTimeout(type, CHAR_DELAY);
+            } else {
+                // 当前行打完，换下一行
+                lineIndex++;
+                charIndex = 0;
+                if (lineIndex < lines.length) {
+                    setTimeout(type, LINE_DELAY);
+                } else {
+                    // 最后一行打完，再打一次让光标显示
+                    setTimeout(() => {
+                        el.innerHTML = lines.join('<br>') + '<span class="emoji">🍕</span>';
+                    }, CHAR_DELAY);
+                }
+            }
+        }
 
         el.innerHTML = '<span class="cursor"></span>';
-
-        const timer = setInterval(() => {
-            if (i < text.length) {
-                const newHTML = text.substring(0, i+1) + '<span class="cursor"></span>';
-                el.innerHTML = newHTML;
-                i++;
-            } else {
-                clearInterval(timer);
-            }
-        }, 150);
+        type();
     </script>
     <div style="margin-top: 100px;"></div>
     <div class="center">
