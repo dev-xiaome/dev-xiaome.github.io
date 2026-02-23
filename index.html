@@ -41,6 +41,17 @@
             background-attachment: fixed;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.02);  /* 2% 白色覆盖 */
+            pointer-events: none;
+            z-index: 999;
+        }
         h1 {
             color: #F0F6FC;
             text-align: center;
@@ -128,6 +139,34 @@
             animation: blink 1s step-end infinite;
         }
 
+        /* 整个滚动条宽度 */
+        ::-webkit-scrollbar {
+            width: 10px;  /* 垂直滚动条宽度 */
+            height: 10px; /* 水平滚动条高度 */
+        }
+
+        /* 滚动条轨道 */
+        ::-webkit-scrollbar-track {
+            background: #2B3244;  /* 轨道颜色 */
+            border-radius: 10px;
+        }
+
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            background: #60A5FA;  /* 滑块颜色 */
+            border-radius: 10px;
+        }
+
+        /* 滑块悬停效果 */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #90C6FF;
+        }
+
+        /* 滚动条角落（两个滚动条交叉处） */
+        ::-webkit-scrollbar-corner {
+            background: #1e1e1e;
+        }
+
         .navbar {
             position: fixed;     /* 固定定位 */
             top: 0;              /* 贴在顶部 */
@@ -137,13 +176,14 @@
             padding: 0 24px;
             display: flex;
             align-items: center;
-            z-index: 100;
+            z-index: 500;
             justify-content: space-between;
             border-bottom: 0.5px solid #B7BDC8;
             white-space: nowrap;      /* 防止换行 */
             flex-wrap: nowrap;
-            background: #151D31AA;
-            backdrop-filter: blur(10px);
+            background: #151D3166;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
         }
 
         @keyframes blink {
@@ -250,7 +290,7 @@
             line-height: 1.5;
             overflow-x: auto;
             border: 0.5px solid #262E3E;
-            width: 500px;
+            width: 40vw;
             height: 100px;
             transition: transform 0.3s ease;
         }
@@ -311,6 +351,10 @@
             width: 85vw;
         }
 
+        .noitalic {
+            font-style: unset;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0.2;
@@ -323,15 +367,20 @@
         }
 
         .fade {
+            opacity: 0;
             display: inline-block;
+        }
+
+        .fade.visible {
+            opacity: 1;
             animation: fadeIn 1s ease-in-out;
         }
 
         .fade:nth-child(1) { animation-delay: 0.1s; }
-        .fade:nth-child(2) { animation-delay: 0.2s; }
-        .fade:nth-child(3) { animation-delay: 0.3s; }
-        .fade:nth-child(4) { animation-delay: 0.4s; }
-        .fade:nth-child(5) { animation-delay: 0.5s; }
+        .fade:nth-child(2) { animation-delay: 0.15s; }
+        .fade:nth-child(3) { animation-delay: 0.2s; }
+        .fade:nth-child(4) { animation-delay: 0.25s; }
+        .fade:nth-child(5) { animation-delay: 0.3s; }
 
         @keyframes mfadeIn {
             from {
@@ -345,19 +394,65 @@
         }
 
         .mfade {
+            opacity: 0;
             display: inline-block;
+        }
+
+        .mfade.visible {
+            opacity: 1;
             animation: mfadeIn 1s ease-in-out;
         }
+
         .mfade:nth-child(1) { animation-delay: 0.1s; }
-        .mfade:nth-child(2) { animation-delay: 0.2s; }
-        .mfade:nth-child(3) { animation-delay: 0.3s; }
-        .mfade:nth-child(4) { animation-delay: 0.4s; }
-        .mfade:nth-child(5) { animation-delay: 0.5s; }
+        .mfade:nth-child(2) { animation-delay: 0.15s; }
+        .mfade:nth-child(3) { animation-delay: 0.2s; }
+        .mfade:nth-child(4) { animation-delay: 0.25s; }
+        .mfade:nth-child(5) { animation-delay: 0.3s; }
 
     </style>
 </head>
 <body style="font-family: 'mono', sans-serif;">
-    <div class="navbar">
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // 如果只想触发一次，取消下面注释
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2,  // 20%可见时触发
+            rootMargin: '0px'
+        });
+
+        document.querySelectorAll('.fade').forEach(el => {
+            observer.observe(el);
+        });
+    });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // 如果只想触发一次，取消下面注释
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2,  // 20%可见时触发
+            rootMargin: '0px'
+        });
+
+        document.querySelectorAll('.mfade').forEach(el => {
+            observer.observe(el);
+        });
+    });
+    </script>
+    <div class="navbar full-screen">
         <div style="text-align: left;">
             <span class="mfade">
             <img src="favicon.ico" width="24" height="24"
@@ -378,7 +473,13 @@
     <span class="fade">
         <h1 class="animated-gradient">让项目管理更简单</h1>
     </span>
-    <div style="margin-top: 100px;"></div>
+    <br><br><br>
+    <span class="fade">
+        <blockquote class="noitalic">
+            Python的各种项目管理器都太难了, 所以我创造了它
+        </blockquote>
+    </span>
+    <div style="margin-top: 200px;"></div>
 
     <div class="code-header">
         <div class="fade"><h3>简单地安装:</h3></div>
@@ -489,7 +590,7 @@ Hello,World!
 ╰──────────╯</code>
     </pre>
     </span>
-    <span class="fade"><blockquote>Q: 这就完了?这么快?</blockquote></span>
+    <span class="fade"><blockquote>Q: 这就发了?这么快?</blockquote></span>
     <span class="fade"><blockquote>A: 对!</blockquote></span>
     <span class="fade" style="display: block; text-align: center;">
         <h2>参数</h2>
@@ -539,7 +640,7 @@ Hello,World!
     <br>
     <br>
     <div style="text-align: center; margin-top: 20px; color: #B7BDC8; font-family: 'mono'; font-size:12px;">
-        © 2026 PyPizza | emoji: dev-xiaome.space@outlook.com
+        © 2026 PyPizza | email: dev-xiaome.space@outlook.com
     </div>
     <br>
     <br>
@@ -579,6 +680,24 @@ Hello,World!
         }
         el.innerHTML = '<span class="cursor"></span>';
         type();
+    </script>
+    <script>
+        let lastScroll = 0;
+        const navbar = document.querySelector('.navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                // 向下滚动 - 隐藏
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                // 向上滚动 - 显示
+                navbar.style.transform = 'translateY(0)';
+            }
+
+            lastScroll = currentScroll;
+        });
     </script>
 </body>
 </html>
